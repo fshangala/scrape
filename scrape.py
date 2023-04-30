@@ -4,6 +4,7 @@ import pandas as pd
 
 # Job
 job_title = 'python-developer-jobs'
+fastapi_host = 'http://localhost:8000'
 
 def scrape_job_listings(job_title)->pd.DataFrame:
     # URL
@@ -13,7 +14,7 @@ def scrape_job_listings(job_title)->pd.DataFrame:
     Numpage = 0
     
     # Number of jobs to scrape 
-    JOB_COUNT = 1
+    JOB_COUNT = 5
 
     agent = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36 Vivaldi/5.3.2679.70.'}
 
@@ -34,7 +35,7 @@ def scrape_job_listings(job_title)->pd.DataFrame:
 
         # loop through each job listing and extract the data
         for job in job_listings:
-            if len(job_listings) == JOB_COUNT:
+            if len(df) == JOB_COUNT:
                 break
 
             job_url = job.find('h2', class_='job-result-heading__title').find('a')['href']
@@ -62,6 +63,17 @@ def scrape_job_listings(job_title)->pd.DataFrame:
 
             # # get the company name
             company_name = job.find(name='a', attrs = {'class': 'gtmJobListingPostedBy'}).text.strip()
+            
+            payload={
+                "title":job_title,
+                "company":company_name,
+                "location":job_location,
+                "posted_date":posted_date,
+                "description":job_description,
+                "skills":skills
+            }
+            r = requests.post(f"{fastapi_host}/jobs/",json=payload)
+            print(r.status_code)
 
             # create a pandas DataFrame with the extracted data
             df_temp = pd.DataFrame({'title': [job_title], 'company': [company_name], 'location': [job_location], 
@@ -71,14 +83,6 @@ def scrape_job_listings(job_title)->pd.DataFrame:
             df = pd.concat([df, df_temp], axis= 0)
 
     return df
-
-
-def save_in_database():
-    #establishing the connection
-    #conn = psycopg2.connect(
-    #database="postgres", user='postgres', password='password', host='localhost', port= '5432'
-    #)
-    pass
 
 df_job_listings = scrape_job_listings(job_title)
 df_job_listings.to_csv("jobs.csv")

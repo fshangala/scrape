@@ -20,7 +20,7 @@ def upgrade() -> None:
     op.create_table(
         'jobs',
         sa.Column("id", sa.Integer, primary_key=True, index=True),
-        sa.Column("title", sa.String, unique=True, index=True),
+        sa.Column("title", sa.String, index=True),
         sa.Column("company", sa.String, index=True),
         sa.Column("location", sa.String, index=True),
         sa.Column("posted_date", sa.String, index=True),
