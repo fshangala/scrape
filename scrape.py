@@ -1,8 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-import psycopg2
-
 
 # Job
 job_title = 'python-developer-jobs'
@@ -79,11 +77,5 @@ def save_in_database():
     database="postgres", user='postgres', password='password', host='localhost', port= '5432'
     )
 
-    
-
-
-
-
-if __name__ == '__main__':
-    df_job_listings = scrape_job_listings(job_title)
+df_job_listings = scrape_job_listings(job_title)
 
