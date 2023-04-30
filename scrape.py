@@ -5,7 +5,7 @@ import pandas as pd
 # Job
 job_title = 'python-developer-jobs'
 
-def scrape_job_listings(job_title):
+def scrape_job_listings(job_title)->pd.DataFrame:
     # URL
     URL = 'https://www.reed.co.uk'
 
@@ -13,7 +13,7 @@ def scrape_job_listings(job_title):
     Numpage = 0
     
     # Number of jobs to scrape 
-    JOB_COUNT = 50
+    JOB_COUNT = 1
 
     agent = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36 Vivaldi/5.3.2679.70.'}
 
@@ -25,6 +25,7 @@ def scrape_job_listings(job_title):
         Numpage += 1
 
         url = f"{URL}/jobs/{job_title}?pageno={Numpage}"
+        print(url)
         page = requests.get(url, headers=agent)
         soup = BeautifulSoup(page.content, 'html.parser')
 
@@ -37,6 +38,7 @@ def scrape_job_listings(job_title):
                 break
 
             job_url = job.find('h2', class_='job-result-heading__title').find('a')['href']
+            print(job_url)
             job_page = requests.get(URL+job_url)
             job_soup = BeautifulSoup(job_page.content, 'html.parser')
 
@@ -73,9 +75,10 @@ def scrape_job_listings(job_title):
 
 def save_in_database():
     #establishing the connection
-    conn = psycopg2.connect(
-    database="postgres", user='postgres', password='password', host='localhost', port= '5432'
-    )
+    #conn = psycopg2.connect(
+    #database="postgres", user='postgres', password='password', host='localhost', port= '5432'
+    #)
+    pass
 
 df_job_listings = scrape_job_listings(job_title)
-
+df_job_listings.to_csv("jobs.csv")
