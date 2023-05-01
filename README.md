@@ -13,3 +13,11 @@ experience:
 date:
 responsibilities:
 company:
+
+# Run with docker compose
+```bash
+docker compose build
+```
+```bash
+docker compose up
+```
