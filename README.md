@@ -23,6 +23,12 @@ pytest
 ```bash
 docker compose build
 ```
+
+- Run in current terminal
 ```bash
 docker compose up
+```
+- run in detached mode
+```bash
+docker compose up -d
 ```
