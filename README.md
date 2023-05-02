@@ -14,6 +14,11 @@ date:
 responsibilities:
 company:
 
+# Run Tests
+```bash
+pytest
+```
+
 # Run with docker compose
 ```bash
 docker compose build
