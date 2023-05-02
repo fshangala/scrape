@@ -3,6 +3,7 @@ version: "3.7"
 services:
   app:
     build: .
+    command: bash -c "pytest"
     ports:
       - 8000:80
     depends_on:
