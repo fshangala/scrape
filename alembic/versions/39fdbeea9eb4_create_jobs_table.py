@@ -17,17 +17,29 @@ depends_on = None
 
 
 def upgrade() -> None:
-    op.create_table(
-        'jobs',
-        sa.Column("id", sa.Integer, primary_key=True, index=True),
-        sa.Column("title", sa.String, index=True),
-        sa.Column("company", sa.String, index=True),
-        sa.Column("location", sa.String, index=True),
-        sa.Column("posted_date", sa.String, index=True),
-        sa.Column("description", sa.String, index=True),
-        sa.Column("skills", sa.String, index=True)
-    )
-
+    try:
+        op.create_table(
+            'jobs',
+            sa.Column("id", sa.Integer, primary_key=True, index=True),
+            sa.Column("title", sa.String, index=True),
+            sa.Column("company", sa.String, index=True),
+            sa.Column("location", sa.String, index=True),
+            sa.Column("posted_date", sa.String, index=True),
+            sa.Column("description", sa.String, index=True),
+            sa.Column("skills", sa.String, index=True)
+        )
+    except Exception as e:
+        op.drop_table('jobs')
+        op.create_table(
+            'jobs',
+            sa.Column("id", sa.Integer, primary_key=True, index=True),
+            sa.Column("title", sa.String, index=True),
+            sa.Column("company", sa.String, index=True),
+            sa.Column("location", sa.String, index=True),
+            sa.Column("posted_date", sa.String, index=True),
+            sa.Column("description", sa.String, index=True),
+            sa.Column("skills", sa.String, index=True)
+        )
 
 def downgrade() -> None:
     op.drop_table("jobs")
